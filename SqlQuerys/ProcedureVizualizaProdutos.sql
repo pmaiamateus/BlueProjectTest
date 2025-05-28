@@ -14,19 +14,23 @@ BEGIN
 	if @filtro2 = 'N'
 	SELECT top (@itens) [ProdutoId], Nome, Descricao, preco, estoque, datacadastro
 	from dbo.Produtos
-	where Nome like @filtro1 and ProdutoId > @pagina
+	where Nome like @filtro1 and ProdutoId > (@pagina * @itens)
 	if @filtro2 = 'D'
 	SELECT top (@itens) [ProdutoId], Nome, Descricao, preco, estoque, datacadastro
 	from dbo.Produtos
-	where Descricao like @filtro1 and ProdutoId > @pagina
+	where Descricao like @filtro1 and ProdutoId > (@pagina * @itens)
 	if @filtro4 = 'Min'
 	SELECT top (@itens) [ProdutoId], Nome, Descricao, preco, estoque, datacadastro
 	from dbo.Produtos
-	where Preco >= @filtro3 and ProdutoId > @pagina
+	where Preco >= @filtro3 and ProdutoId > (@pagina * @itens)
 	if @filtro4 = 'Max'
 	SELECT top (@itens) [ProdutoId], Nome, Descricao, preco, estoque, datacadastro
 	from dbo.Produtos
-	where Preco <= @filtro3 and ProdutoId > @pagina
+	where Preco <= @filtro3 and ProdutoId > (@pagina * @itens)
+	else
+	SELECT top (@itens) [ProdutoId], Nome, Descricao, preco, estoque, datacadastro
+	from dbo.Produtos
+	where ProdutoId > (@pagina * @itens)
 	return;
 END
 go
